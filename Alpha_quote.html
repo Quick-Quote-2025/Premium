@@ -7,14 +7,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root{ --bg-offwhite:#f7f7f2; --card-bg:#ffffff; --text:#1f2937; --muted:#6b7280; --accent:#1f7a1f; --accent-hover:#196519; --blue:#1867c0; --blue-hover:#14549a; --grey:#7a7a7a; --grey-hover:#6a6a6a; --border:#e5e7eb; --pill:#eef2f7; --danger:#c62828; --ok:#2e7d32; --section:#0ea5e9; }
-  
+   
   /* Global Box Sizing Fix */
   *, *::before, *::after { box-sizing: border-box; }
 
-  body{ margin:0; background:var(--bg-offwhite); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; line-height:1.4; }
+  body { 
+    margin: 0; 
+    background: url('bg_pic.jpg') no-repeat center center fixed; 
+    background-size: cover; 
+    background-color: var(--bg-offwhite); 
+    color: var(--text); 
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; 
+    line-height: 1.4; 
+  }
+
   .container{ max-width:960px; margin:0 auto; padding:18px 14px 70px; }
   header.page-head{ text-align:center; margin:10px 0 18px; }
-  header.page-head h1{ margin:0; font-size:24px; font-weight:800; }
+  header.page-head h1{ margin:0; font-size:24px; font-weight:800; text-shadow: 0 1px 3px rgba(255,255,255,0.8); }
 
   /* Card & Inputs Styling */
   .card{ background:var(--card-bg); border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:12px; box-shadow:0 3px 10px rgba(0,0,0,.045); }
@@ -44,14 +53,25 @@
   .btn{ border:none; border-radius:10px; padding:11px 16px; font-weight:700; font-size:13px; cursor:pointer; background:var(--grey); color:#fff; }
   .btn-primary{ background:var(--accent); } 
   .btn-blue{ background:var(--blue); }
+  
+  /* WhatsApp Button Styling */
+  .btn-whatsapp { 
+    background: #25D366; 
+    color: #fff; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+  }
+  .btn-whatsapp:hover { background: #20bd5a; }
+  .icon-wa { width: 16px; height: 16px; fill: currentColor; }
 
   /* -------------------------------------------------------- */
   /* ULTRA COMPACT RESULT STYLES (Single Page Fit)            */
   /* -------------------------------------------------------- */
-  
+   
   #result-section { 
     background: white; 
-    padding: 15px; /* Reduced Padding */
+    padding: 15px; 
     border-radius: 14px; 
     border: 2px solid #374151;
     width: 98%; 
@@ -62,43 +82,43 @@
   .quote-main-heading {
     text-align: center;
     color: var(--blue);
-    font-size: 18px; /* Reduced Font */
+    font-size: 15px; 
     font-weight: 800;
-    margin: 0 0 8px 0; /* Reduced Margin */
+    margin: 0 0 8px 0; 
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 2px solid #e5e7eb;
     padding-bottom: 5px;
   }
-  
+   
   /* Compact Premium Box */
   .premium-box {
     background: #f0fdf4; 
     border: 2px dashed #16a34a;
     border-radius: 8px;
-    padding: 6px; /* Reduced Padding */
+    padding: 6px; 
     text-align: center;
-    margin-bottom: 8px; /* Reduced Margin */
+    margin-bottom: 8px; 
   }
-  .premium-title { font-size: 13px; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 1px; }
-  .premium-amount { font-size: 22px; font-weight: 900; color: #15803d; margin: 2px 0; } 
+  .premium-title { font-size: 10px; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 1px; }
+  .premium-amount { font-size: 18px; font-weight: 900; color: #15803d; margin: 2px 0; } 
   .discount-info { color: #15803d; font-size: 10px; font-weight: 600; }
 
   /* Compact Table Styling */
   .result-table { 
     width: 100%; 
-    margin: 0 auto 5px auto; /* Tight margin */
+    margin: 0 auto 5px auto; 
     table-layout: fixed; 
   }
-  
+   
   .result-table th, .result-table td { 
-    padding: 1px 6px; /* TIGHT PADDING FOR SINGLE PAGE */
+    padding: 1px 6px; 
     border: 1px solid #9ca3af; 
-    font-size: 13px; /* Small font */
+    font-size: 10px; 
     line-height: 1.3;
     vertical-align: middle;
   }
-  
+   
   .result-table th { 
     background-color: #f3f4f6; 
     color: #111827; 
@@ -107,17 +127,17 @@
     text-align: left; 
     height: 20px;
   }
-  
+   
   .result-table td { 
     color: #1f2937; 
     width: 60%; 
     text-align: left;
     height: 20px;
   }
-  
+   
   /* Section headers in result */
   #result-section .section-title {
-      font-size: 14px;
+      font-size: 11px;
       margin-bottom: 2px;
       min-height: 18px;
   }
@@ -133,7 +153,7 @@
       margin-top: 10px;
       line-height: 1.2;
   }
-  
+   
   /* Print Media - Hide inputs */
   @media print {
     #basic-section, #members-section, #modifiers-section, #optional-section, #discounts-section, .actions, #pagedrop-fab-container, #pagedrop-expiry-popup, #membersError { display: none !important; }
@@ -188,6 +208,37 @@
         <div class="col-6"><label>Health Check-Up</label><select id="healthCheck"><option>Not Opted</option><option>Rs.3,000</option><option>Rs.4,000</option><option>Rs.5,000</option></select></div>
         <div class="col-6"><label>Endless Sum Insured</label><select id="endless"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
         <div class="col-6"><label>Reconstructive Surgery</label><select id="reconstructive"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
+        
+        <div class="col-6" id="opdContainer"><label>OPD Coverage</label>
+            <select id="opd">
+                <option>Not Opted</option>
+            </select>
+        </div>
+
+        <div class="col-6" id="hospitalCashContainer"><label>Hospital Daily Cash</label>
+            <select id="hospitalCash">
+                <option>Not Opted</option>
+                <option>3 Days</option>
+                <option>5 Days</option>
+                <option>10 Days</option>
+            </select>
+        </div>
+
+        <div class="col-6" id="maternityContainer"><label>Maternity Benefit</label>
+            <select id="maternity">
+                <option>Not Opted</option>
+            </select>
+        </div>
+
+        <div class="col-6" id="maternityWaitContainer" style="display:none;"><label>Maternity Waiting Period</label>
+            <select id="maternityWait">
+                <option>Choose</option>
+                <option>1 Year</option>
+                <option>2 Years</option>
+                <option>3 Years</option>
+            </select>
+        </div>
+
       </div>
     </section>
 
@@ -203,13 +254,19 @@
     </section>
 
     <div class="actions">
-      <button id="calcBtn" class="btn btn-primary">Calculate Premium</button>
-      <button id="pdfBtn" class="btn btn-blue">Download Quote</button>
-      <button id="resetBtn" class="btn btn-grey">Reset</button>
-    </div>
+  <button id="calcBtn" class="btn btn-primary">Calculate Premium</button>
+  <button id="pdfBtn" class="btn btn-blue">Download Quote</button>
+  <button id="waBtn" class="btn btn-whatsapp">
+    <svg class="icon-wa" viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    WhatsApp
+  </button>
+  <button id="resetBtn" class="btn btn-grey">Reset</button>
+</div>
 
     <div id="result-section" style="display:none; margin-top:20px;">
-      
+       
       <h3 class="quote-main-heading">Health Alpha - Select Variant Quote</h3>
 
       <div class="premium-box">
@@ -310,6 +367,33 @@
 
   const PER_MEMBER_AMBULANCE = {"0-17":21,"18-25":14,"26-30":18,"31-35":22,"36-40":27,"41-45":34,"46-50":43,"51-55":53,"56-60":66,"61-65":83,"66-70":103,"71-75":129,"76-80":161,"81-85":200,"85+":250};
   const PER_MEMBER_RADIO = {"0-17":24,"18-25":16,"26-30":20,"31-35":25,"36-40":31,"41-45":39,"46-50":49,"51-55":61,"56-60":76,"61-65":95,"66-70":118,"71-75":147,"76-80":183,"81-85":229,"85+":285};
+  
+  // Hospital Cash Data
+  const HOSPITAL_CASH_PREMIUMS = {
+    "0-17": 301, "18-25": 204, "26-30": 257, "31-35": 324, "36-40": 413,
+    "41-45": 517, "46-50": 647, "51-55": 825, "56-60": 1055, "61-65": 1347,
+    "66-70": 1719, "71-75": 2190, "76-80": 2857, "81-85": 4164, "85+": 5950
+  };
+  const HOSPITAL_CASH_REL = {
+    "3 Days": 0.80, "5 Days": 0.85, "10 Days": 0.90
+  };
+
+  // Maternity Data
+  const MATERNITY_BASE_PREMIUM = {
+      "Rs. 50,000": { "18-35": 12053, "36-45": 10245 },
+      "Rs. 75,000": { "18-35": 18079, "36-45": 15368 }
+  };
+  const MATERNITY_WAIT_REL = {
+      "1 Year": 1.67466666666667,
+      "2 Years": 1.00,
+      "3 Years": 0.80
+  };
+  const CHILD_VACCINATION = 2202;
+  const NEW_BORN_COVER = {
+      1000000: 7388, 1250000: 8183, 1500000: 9253, 2000000: 10476,
+      2500000: 11088, 3000000: 11706, 3500000: 12164, 5000000: 13540,
+      7500000: 14668, 10000000: 15585
+  };
 
   const SI_LABEL_TO_VALUE = {"5 Lac":500000,"7.5 Lac":750000,"10 Lac":1000000,"12.5 Lac":1250000,"15 Lac":1500000,"20 Lac":2000000,"25 Lac":2500000,"30 Lac":3000000,"35 Lac":3500000,"50 Lac":5000000,"75 Lac":7500000,"1Cr":10000000};
 
@@ -343,71 +427,138 @@
         </div>`;
       membersWrap.appendChild(card);
     }
+    // Listen for changes in member details to update optional benefits visibility instantly
+    membersWrap.querySelectorAll('input, select').forEach(el => {
+        el.addEventListener('change', updateOptionalVisibility);
+        el.addEventListener('input', updateOptionalVisibility);
+    });
+    // Trigger initial check
+    updateOptionalVisibility();
   }
 
   function enforcePolicyCombination(){ const pt=document.getElementById('policyType').value; const comboSel=document.getElementById('combination'); const genBtn=document.getElementById('genMembersBtn'); if(pt==='Individual'){ comboSel.value='1A'; [...comboSel.options].forEach(opt=>{ opt.hidden=(opt.value!=='1A'); opt.disabled=(opt.value!=='1A'); }); comboSel.disabled=true; genBtn.disabled=false; } else { [...comboSel.options].forEach(opt=>{ if(opt.value==='1A'){ opt.hidden=true; opt.disabled=true; } else { opt.hidden=false; opt.disabled=false; } }); comboSel.disabled=false; if(comboSel.value==='1A'){ comboSel.value='2A'; } genBtn.disabled=false; } }
 
   function getMembers(){ const list=[]; membersWrap.querySelectorAll('.member-card').forEach(card=>{ const ageInp=card.querySelector('.age-input'); const genderSel=card.querySelector('.gender-input'); const role=ageInp.getAttribute('data-role'); const idx=ageInp.getAttribute('data-index'); const age=parseInt(ageInp.value); const gender=genderSel.value; list.push({role,idx,age,gender}); }); return list; }
   function validateMembers() {
-    // 1. Check for Empty Fields
     const inputs = membersWrap.querySelectorAll('.age-input');
     let ok = true;
-    inputs.forEach(inp => {
-      if (inp.value.trim() === '') {
-        ok = false;
-        inp.style.borderColor = 'var(--danger)';
-      } else {
-        inp.style.borderColor = 'var(--border)';
-      }
-    });
-    if (!ok) {
-      membersError.style.display = 'block';
-      membersError.textContent = 'Age is mandatory for all members.';
-      return false;
-    }
+    inputs.forEach(inp => { if (inp.value.trim() === '') { ok = false; inp.style.borderColor = 'var(--danger)'; } else { inp.style.borderColor = 'var(--border)'; } });
+    if (!ok) { membersError.style.display = 'block'; membersError.textContent = 'Age is mandatory for all members.'; return false; }
 
-    // 2. NEW: Check Adult Age (Must be >= 18)
     const adultAges = membersWrap.querySelectorAll('.age-input[data-role="adult"]');
-    let adultInvalid = false;
-    adultAges.forEach(inp => {
-      const val = parseInt(inp.value);
-      if (!isNaN(val) && val < 18) {
-        adultInvalid = true;
-        inp.style.borderColor = 'var(--danger)';
-      }
-    });
+    let adultInvalid = false; adultAges.forEach(inp => { const val = parseInt(inp.value); if (!isNaN(val) && val < 18) { adultInvalid = true; inp.style.borderColor = 'var(--danger)'; } });
+    if (adultInvalid) { membersError.style.display = 'block'; membersError.textContent = 'Minimum age for Adults is 18 years.'; return false; }
 
-    if (adultInvalid) {
-      membersError.style.display = 'block';
-      membersError.textContent = 'Minimum age for Adults is 18 years.';
-      return false;
-    }
-
-    // 3. Check Child Age (Must be <= 25)
     const childAges = membersWrap.querySelectorAll('.age-input[data-role="child"]');
-    let childInvalid = false;
-    childAges.forEach(inp => {
-      const val = parseInt(inp.value);
-      if (!isNaN(val) && val > 25) {
-        childInvalid = true;
-        inp.style.borderColor = 'var(--danger)';
-      }
-    });
+    let childInvalid = false; childAges.forEach(inp => { const val = parseInt(inp.value); if (!isNaN(val) && val > 25) { childInvalid = true; inp.style.borderColor = 'var(--danger)'; } });
+    if (childInvalid) { membersError.style.display = 'block'; membersError.textContent = 'Age of Child can be maximum 25 years.'; return false; }
 
-    if (childInvalid) {
-      membersError.style.display = 'block';
-      membersError.textContent = 'Age of Child can be maximum 25 years.';
-      return false;
-    }
-
-    // If all checks pass
-    membersError.style.display = 'none';
-    return true;
+    membersError.style.display = 'none'; return true;
   }
   function anyDaughter(){ const childs=membersWrap.querySelectorAll('.gender-input[data-role="child"]'); for(const c of childs){ if(c.value==='Female') return true; } return false; }
 
+  // ------------------------------------------------------------------
+  //  DYNAMIC OPTIONAL BENEFITS VISIBILITY (OPD, CASH, MATERNITY)
+  // ------------------------------------------------------------------
+  function updateOptionalVisibility() {
+      const siLabel = document.getElementById('sumInsured').value;
+      const siVal = SI_LABEL_TO_VALUE[siLabel] || 0;
+      
+      // --- OPD LOGIC ---
+      const opdSelect = document.getElementById('opd');
+      const opdContainer = document.getElementById('opdContainer');
+      const currentOpdVal = opdSelect.value;
+      
+      opdSelect.innerHTML = '';
+      let opdOptions = [];
+      if (siVal < 1000000) {
+          opdContainer.style.display = 'none';
+          opdOptions = ["Not Opted"]; 
+      } else {
+          opdContainer.style.display = 'block';
+          if (siVal <= 2500000) {
+              opdOptions = ["Not Opted", "Rs. 5,000"];
+          } else {
+              opdOptions = ["Not Opted", "Rs. 10,000", "Rs. 25,000"];
+          }
+      }
+      opdOptions.forEach(opt => {
+          const el = document.createElement('option');
+          el.textContent = opt;
+          el.value = opt;
+          opdSelect.appendChild(el);
+      });
+      if(opdOptions.includes(currentOpdVal)) opdSelect.value = currentOpdVal;
+
+      // --- HOSPITAL CASH LOGIC ---
+      const cashContainer = document.getElementById('hospitalCashContainer');
+      const cashSelect = document.getElementById('hospitalCash');
+      if (siVal < 1000000) {
+        cashContainer.style.display = 'none';
+        cashSelect.value = "Not Opted"; 
+      } else {
+        cashContainer.style.display = 'block';
+      }
+
+      // --- MATERNITY BENEFIT LOGIC ---
+      const matContainer = document.getElementById('maternityContainer');
+      const matSelect = document.getElementById('maternity');
+      const currentMatVal = matSelect.value;
+      
+      let hasEligibleFemale = false;
+      const members = getMembers(); 
+      for(const m of members) {
+          if(m.gender === 'Female' && m.age >= 18 && m.age <= 45) {
+              hasEligibleFemale = true;
+              break;
+          }
+      }
+
+      matSelect.innerHTML = '';
+      let matOptions = [];
+
+      if (siVal < 1000000 || !hasEligibleFemale) {
+          matContainer.style.display = 'none';
+          matOptions = ["Not Opted"];
+      } else {
+          matContainer.style.display = 'block';
+          if(siVal === 1000000) {
+              matOptions = ["Not Opted", "Rs. 50,000"];
+          } else {
+              matOptions = ["Not Opted", "Rs. 75,000"];
+          }
+      }
+      matOptions.forEach(opt => {
+          const el = document.createElement('option');
+          el.textContent = opt;
+          el.value = opt;
+          matSelect.appendChild(el);
+      });
+      if(matOptions.includes(currentMatVal)) matSelect.value = currentMatVal;
+
+      // --- MATERNITY WAITING PERIOD LOGIC ---
+      const matWaitContainer = document.getElementById('maternityWaitContainer');
+      const matWaitSelect = document.getElementById('maternityWait');
+      
+      if (matContainer.style.display !== 'none' && matSelect.value !== 'Not Opted') {
+          // If previously hidden, reset to 'Choose'
+          if(matWaitContainer.style.display === 'none') {
+             matWaitSelect.value = "Choose";
+          }
+          matWaitContainer.style.display = 'block';
+      } else {
+          matWaitContainer.style.display = 'none';
+          matWaitSelect.value = "Choose"; 
+      }
+  }
+
   function calcPremium(){ 
     const siLabel=document.getElementById('sumInsured').value; const siVal=SI_LABEL_TO_VALUE[siLabel]; const pt=document.getElementById('policyType').value; const combo=document.getElementById('combination').value; const zone=document.getElementById('zone').value; const tenure=document.getElementById('tenure').value; const room=document.getElementById('roomCategory').value; const pedSel=document.getElementById('pedWait').value; const specSel=document.getElementById('specWait').value; const ncbSel=document.getElementById('ncb').value; const consumables=document.getElementById('consumables').value; const healthCheck=document.getElementById('healthCheck').value; const endless=document.getElementById('endless').value; const reconstructive=document.getElementById('reconstructive').value; const welcomeDisc=document.getElementById('welcomeDisc').value==='Yes'; const preferredNetwork=document.getElementById('preferredNetwork').value==='Yes';
+    
+    const opd = document.getElementById('opd').value;
+    const hospitalCash = document.getElementById('hospitalCash').value;
+    const maternity = document.getElementById('maternity').value;
+    const maternityWait = document.getElementById('maternityWait').value;
     
     if(!validateMembers()) return;
     const {adults,children}=parseCombination(combo); const memberCount=adults+children; if((pt==='Family Floater'||pt==='Individual Floater')&&memberCount<2){ membersError.style.display='block'; membersError.textContent='Minimum 2 members required for Floater policies.'; return; }
@@ -420,26 +571,97 @@
     const ambulanceAmt=perMemberBase.reduce((s,m)=> s+(PER_MEMBER_AMBULANCE[m.bandLabel]||0)*CFG.AMB_LIMIT_REL,0); const radioCabAmt=perMemberBase.reduce((s,m)=> s+(PER_MEMBER_RADIO[m.bandLabel]||0)*CFG.RADIO_LIMIT_REL,0); const organDonorAmt=CFG.ORGAN_DONOR_PER_MEMBER(siVal)*totalMembers; const eOpinionAmt=CFG.E_OPINION_PER_MEMBER*totalMembers;
     const restoreAmt=baseWithModifiers*(CFG.RESTORE_PCT(siVal)/100); const consumablesAmt=(consumables==='Yes')? baseWithModifiers*(CFG.CONSUMABLES_PCT/100):0; const endlessAmt=(endless==='Yes')? baseWithModifiers*(CFG.ENDLESS_PCT(siVal)/100):0; const modernAmt=baseWithModifiers*(CFG.MODERN_TREATMENT_PCT/100); const reconstructiveAmt=(reconstructive==='Yes')? (CFG.RECONSTRUCTIVE_PER_MEMBER*totalMembers):0;
     
+    // ===============================================
+    // OPD CALCULATION LOGIC
+    // ===============================================
+    const OPD_BASE = 9175;
+    const OPD_LIMIT_REL = { 
+        "Rs. 5,000": 0.30, 
+        "Rs. 10,000": 0.60, 
+        "Rs. 25,000": 1.00,
+        "Not Opted": 0.0
+    };
+    function getOpdMemberFactor(n) {
+        if(n === 1) return 1.00;
+        if(n === 2) return 1.20;
+        if(n === 3) return 1.40;
+        return 1.50; // >3
+    }
+
+    let opdAmt = 0;
+    if (opd !== "Not Opted") {
+        const limitRel = OPD_LIMIT_REL[opd] || 0;
+        const memberRel = getOpdMemberFactor(totalMembers);
+        const rawOpd = (OPD_BASE * limitRel * memberRel);
+        opdAmt = rawOpd * 0.90;
+    }
+
+    // ===============================================
+    // HOSPITAL CASH CALCULATION LOGIC
+    // ===============================================
+    let hospitalCashAmt = 0; 
+    if (hospitalCash !== "Not Opted") {
+        const dayRel = HOSPITAL_CASH_REL[hospitalCash] || 0;
+        hospitalCashAmt = perMemberBase.reduce((sum, m) => {
+            const agePremium = HOSPITAL_CASH_PREMIUMS[m.bandLabel] || 0;
+            const memberCost = (agePremium * dayRel) * 0.597004515537621;
+            return sum + memberCost;
+        }, 0);
+    }
+    
+    // ===============================================
+    // MATERNITY PREMIUM CALCULATION
+    // ===============================================
+    let maternityTotalAmt = 0;
+    
+    // Calculate only if Benefit is selected AND Waiting Period is valid (not "Choose")
+    if (maternity !== "Not Opted" && maternityWait !== "Choose") {
+        const waitRelativity = MATERNITY_WAIT_REL[maternityWait] || 0;
+        const newbornCover = NEW_BORN_COVER[siVal] || 0;
+        
+        // Loop through members to find eligible females
+        members.forEach(m => {
+            if(m.gender === 'Female' && m.age >= 18 && m.age <= 45) {
+                // Determine Age Band
+                let ageKey = null;
+                if(m.age >= 18 && m.age <= 35) ageKey = "18-35";
+                else if(m.age >= 36 && m.age <= 45) ageKey = "36-45";
+                
+                if(ageKey) {
+                    const baseMatPrem = MATERNITY_BASE_PREMIUM[maternity][ageKey];
+                    // Formula: (Female member maternity premium × Maternity waiting period Relativity) + Child Vaccination amount + New Born Baby Cover amount
+                    const memberCost = (baseMatPrem * waitRelativity) + CHILD_VACCINATION + newbornCover;
+                    maternityTotalAmt += memberCost;
+                }
+            }
+        });
+    }
+    
     let step1Subtotal=baseWithModifiers+ambulanceAmt+radioCabAmt+organDonorAmt+eOpinionAmt+restoreAmt+consumablesAmt+endlessAmt+modernAmt+reconstructiveAmt;
     let floaterAmt=0; if(pt==='Family Floater'){ floaterAmt=step1Subtotal*(CFG.FLOATER_TIERS(totalMembers)/100); step1Subtotal-=floaterAmt; }
     
     const CONV_LIMIT=5000; const convalescenceAmt=perMemberBase.reduce((s,m)=>{ const rate=CFG.CONVALESCENCE_PER_MILLE[m.bandLabel]||0; return s+(CONV_LIMIT*rate/1000); },0);
     let healthCheckAmt=0; if(healthCheck!=='Not Opted'){ const baseHC=CFG.HEALTH_CHECK_BASE[healthCheck]||0; const rel=CFG.HEALTH_CHECK_REL(eligibleHCCount); healthCheckAmt=Math.round(baseHC*rel); }
-    const step2Total=step1Subtotal+convalescenceAmt+healthCheckAmt;
+    const step2Total=step1Subtotal+convalescenceAmt+healthCheckAmt+opdAmt+hospitalCashAmt+maternityTotalAmt;
 
     let baseForStep3 = step2Total;
     const minBaseAfterCap = step2Total * (1 - CFG.MAX_AGG_DISC_PCT / 100);
-    const termPct=CFG.TERM_DISCOUNT_PCT[tenure]||0; const zonePct=CFG.ZONE_DISCOUNT(zone); const girlPct=anyDaughter()? CFG.GIRL_CHILD_PCT:0; const welcomePct=CFG.WELCOME_PCT(welcomeDisc); const preferredPct=CFG.PREFERRED_NETWORK_PCT(preferredNetwork);
+    
+    const hasGirlChild = anyDaughter(); 
+    const girlPct = hasGirlChild ? CFG.GIRL_CHILD_PCT : 0;
+    
+    const gcStatusBox = document.getElementById('girlChildStatus');
+    if(hasGirlChild) { gcStatusBox.textContent = "Yes"; gcStatusBox.style.color = "var(--ok)"; gcStatusBox.style.fontWeight = "800"; gcStatusBox.style.borderColor = "var(--ok)"; gcStatusBox.style.background = "#e6f4ea"; } 
+    else { gcStatusBox.textContent = "No"; gcStatusBox.style.color = "var(--muted)"; gcStatusBox.style.fontWeight = "normal"; gcStatusBox.style.borderColor = "var(--border)"; gcStatusBox.style.background = "#fff"; }
+
+    const termPct=CFG.TERM_DISCOUNT_PCT[tenure]||0; const zonePct=CFG.ZONE_DISCOUNT(zone); const welcomePct=CFG.WELCOME_PCT(welcomeDisc); const preferredPct=CFG.PREFERRED_NETWORK_PCT(preferredNetwork);
     let discComponents=[["Zone Discount",zonePct],["Girl Child Discount",girlPct],["Preferred Network",preferredPct],["Welcome Discount",welcomePct],["Term Discount",termPct]]; 
     
     discComponents.forEach(([name,pct])=>{ if(pct<=0) return; let intendedAmt=baseForStep3*(pct/100); let baseAfter=baseForStep3-intendedAmt; if(baseAfter<minBaseAfterCap){ intendedAmt=baseForStep3-Math.max(minBaseAfterCap,0); baseAfter=baseForStep3-intendedAmt; } baseForStep3=baseAfter; }); 
     const step3DiscountAmount=step2Total-baseForStep3; let finalPremiumNoGST=Math.max(0, baseForStep3);
 
-    // DISPLAY
     const resultSec = document.getElementById('result-section');
     resultSec.style.display='block';
-    
-    // Smooth scroll to results
     resultSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     document.getElementById('finalPremium').textContent=formatMoney(finalPremiumNoGST);
@@ -451,7 +673,6 @@
     document.getElementById('infoZone').textContent=zone;
     document.getElementById('infoTenure').textContent=tenure;
     
-    // Fill Modifiers Table
     document.getElementById('resRoom').textContent = room;
     document.getElementById('resPed').textContent = pedSel;
     document.getElementById('resSpec').textContent = specSel;
@@ -461,12 +682,34 @@
     document.getElementById('infoMembersDetailed').textContent = memList;
     
     const optBody=document.getElementById('optionalChosenBody'); optBody.innerHTML=''; 
-    const rows=[["Consumables", consumables, consumablesAmt],["Health Check-Up", healthCheck, healthCheckAmt],["Endless Sum Insured", endless, endlessAmt],["Reconstructive Surgery", reconstructive, reconstructiveAmt]]; 
+    
+    const rows=[
+        ["Consumables", consumables, consumablesAmt],
+        ["Health Check-Up", healthCheck, healthCheckAmt],
+        ["Endless Sum Insured", endless, endlessAmt],
+        ["Reconstructive Surgery", reconstructive, reconstructiveAmt],
+        ["OPD Coverage", opd, opdAmt],
+        ["Hospital Daily Cash", hospitalCash, hospitalCashAmt],
+        ["Maternity Benefit", maternity, maternityTotalAmt]
+    ];
+    // Add Waiting Period display
+    if(maternity !== "Not Opted" && maternityWait !== "Choose") {
+        rows.push(["Maternity Waiting Period", maternityWait, 0]); // Cost included in main benefit line
+    }
+
     rows.forEach(([name,status,amt])=>{ 
-        // Logic to show "Included/Yes" if amount > 0 or status is explicit
         if(status !== 'Not Opted' && status !== 'No') {
             const tr=document.createElement('tr'); 
+            // If amt is 0 but it's a waiting period line, show as included or dash
+            let displayAmt = formatMoney(amt);
+            if(name === "Maternity Waiting Period") displayAmt = "—";
+            
             tr.innerHTML=`<td>${name}</td><td>${status}</td>`; 
+            // Optional: You could add a 3rd column for price breakdown if desired
+            // For now, keeping structure simple: Name | Option. 
+            // If you want to show cost next to feature name:
+            // tr.innerHTML=`<td>${name} <span style="float:right;font-weight:bold;color:#166534;">${displayAmt !== "—" ? displayAmt : ""}</span></td><td>${status}</td>`;
+            
             optBody.appendChild(tr); 
         }
     });
@@ -479,12 +722,15 @@
   document.getElementById('resetBtn').addEventListener('click', ()=>{ window.location.reload(); });
   ['policyType','combination','zone','tenure'].forEach(id=>{ document.getElementById(id).addEventListener('change', ()=>{ if(id==='policyType'){ enforcePolicyCombination(); } renderMemberRows(); }); }); enforcePolicyCombination(); renderMemberRows();
 
+  // Listen for Maternity changes to toggle waiting period
+  document.getElementById('maternity').addEventListener('change', updateOptionalVisibility);
+
   // PDF DOWNLOAD LOGIC
   document.getElementById('pdfBtn').addEventListener('click', ()=>{
       const element = document.getElementById('result-section');
       if(element.style.display === 'none') { alert("Please Calculate Premium first."); return; }
       const opt = {
-          margin: [10, 10, 10, 10], // Margins (top, left, bottom, right)
+          margin: [5, 5, 5, 5], 
           filename: 'Health_Alpha_Quote.pdf',
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
@@ -493,6 +739,100 @@
       };
       html2pdf().set(opt).from(element).save();
   });
+
+  // ==========================================
+  // UPDATED WHATSAPP SHARE LOGIC
+  // ==========================================
+  document.getElementById('waBtn').addEventListener('click', async () => {
+    // 1. Check if result is visible
+    const resultSec = document.getElementById('result-section');
+    if (resultSec.style.display === 'none') {
+      alert("Please Calculate Premium first before sharing.");
+      return;
+    }
+
+    // 2. Prepare Data for Message
+    const premium = document.getElementById('finalPremium').textContent;
+    const si = document.getElementById('infoSI').textContent;
+    const policyType = document.getElementById('infoPT').textContent;
+    const zone = document.getElementById('infoZone').textContent;
+    const tenure = document.getElementById('infoTenure').textContent;
+    const members = document.getElementById('infoMembersDetailed').textContent;
+const combination = document.getElementById('infoCombo').textContent;
+const memberData = getMembers();
+const memberAges = memberData.map(m => m.age).join(', ');
+
+let msg = `*Health Alpha Quote* 🏥\n\n`;
+    msg += `*Final Premium:* ${premium} \n`;
+    msg += `-----------------------------\n`;
+    msg += `*Sum Insured:* ${si}\n`;
+    msg += `*Policy Type:* ${policyType}\n`;
+    msg += `*Zone / Tenure:* ${zone} / ${tenure}\n`;
+    msg += `*Combination:* ${combination}\n`;  // 
+         msg += `*Member Ages:* ${memberAges}\n`;   // 
+    msg += `-----------------------------\n`;
+    msg += `_Please find the attached quote for more details_`;
+
+    
+    // 3. Configure PDF Options
+    const opt = {
+      margin: [5, 5, 5, 5],
+      filename: 'Health_Alpha_Quote.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    // 4. Generate PDF Blob and Share
+    try {
+      // Show simple loading feedback (optional)
+      const btn = document.getElementById('waBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Generating...';
+      
+      // Generate Blob
+      const pdfBlob = await html2pdf().set(opt).from(resultSec).output('blob');
+      const pdfFile = new File([pdfBlob], "Health_Alpha_Quote.pdf", { type: "application/pdf" });
+
+      // Check if browser supports file sharing
+      if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+        await navigator.share({
+          files: [pdfFile],
+          title: 'Health Alpha Quote',
+          text: msg
+        });
+      } else {
+        // Fallback for Desktop (cannot share files directly)
+        alert("On desktop, we will download the PDF. Please attach it manually to WhatsApp Web.");
+        
+        // Trigger download
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Health_Alpha_Quote.pdf';
+        a.click();
+        URL.revokeObjectURL(url);
+
+        // Open WhatsApp Text
+        setTimeout(() => {
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        }, 1000);
+      }
+      
+      btn.innerHTML = originalText; // Restore button
+    } catch (error) {
+      console.error("Error sharing:", error);
+      alert("Sharing failed or cancelled.");
+      document.getElementById('waBtn').innerHTML = 'WhatsApp'; // Restore
+    }
+  });
+
+  // NEW: TRIGGER UPDATES ON SI CHANGE & LOAD
+  document.getElementById('sumInsured').addEventListener('change', updateOptionalVisibility);
+  // Initial call
+  updateOptionalVisibility();
+
 </script>
 </body>
 </html>
