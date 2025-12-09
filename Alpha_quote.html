@@ -22,8 +22,18 @@
   }
 
   .container{ max-width:960px; margin:0 auto; padding:18px 14px 70px; }
+  
+  /* HEADER & LOGO STYLES */
   header.page-head{ text-align:center; margin:10px 0 18px; }
-  header.page-head h1{ margin:0; font-size:24px; font-weight:800; text-shadow: 0 1px 3px rgba(255,255,255,0.8); }
+  header.page-head h1{ margin:0; font-size:24px; font-weight:800; text-shadow: 0 1px 3px rgba(255,255,255,0.8);color:rgba(94, 10, 94); }
+  
+  /* Logo Class */
+  .sbi-logo {
+      display: block;
+      margin: 0 auto 10px auto;
+      max-width: 200px; /* Adjust width as needed */
+      height: auto;
+  }
 
   /* Card & Inputs Styling */
   .card{ background:var(--card-bg); border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:12px; box-shadow:0 3px 10px rgba(0,0,0,.045); }
@@ -53,7 +63,7 @@
   .btn{ border:none; border-radius:10px; padding:11px 16px; font-weight:700; font-size:13px; cursor:pointer; background:var(--grey); color:#fff; }
   .btn-primary{ background:var(--accent); } 
   .btn-blue{ background:var(--blue); }
-  
+   
   /* WhatsApp Button Styling */
   .btn-whatsapp { 
     background: #25D366; 
@@ -76,6 +86,12 @@
     border: 2px solid #374151;
     width: 98%; 
     margin: 20px auto;
+  }
+
+  /* Logo inside Result Section (for PDF) */
+  #result-section .sbi-logo {
+      max-width: 150px;
+      margin-bottom: 5px;
   }
 
   /* Compact Heading */
@@ -172,7 +188,10 @@
 <body>
 
   <div class="container">
-    <header class="page-head"><h1>Health Alpha Select Premium Calculator</h1></header>
+    <header class="page-head">
+        <img src="SBI_Logo.png" alt="SBI General Insurance" class="sbi-logo">
+        <h1>Health Alpha Select Premium Calculator</h1>
+    </header>
 
     <section class="card" id="basic-section">
       <div class="section-title"><span class="tag">Basic Details</span><span class="divider"></span></div>
@@ -208,7 +227,7 @@
         <div class="col-6"><label>Health Check-Up</label><select id="healthCheck"><option>Not Opted</option><option>Rs.3,000</option><option>Rs.4,000</option><option>Rs.5,000</option></select></div>
         <div class="col-6" id="endlessContainer"><label>Endless Sum Insured</label>
     <select id="endless"><option>Not Opted</option><option>Yes</option><option>No</option></select>
-</div>      
+</div>  
   <div class="col-6"><label>Reconstructive Surgery</label><select id="reconstructive"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
         
         <div class="col-6" id="opdContainer"><label>OPD Coverage</label>
@@ -268,7 +287,9 @@
 </div>
 
     <div id="result-section" style="display:none; margin-top:20px;">
-       
+        
+      <!--<img src="SBI_Logo.png" alt="SBI General Insurance" class="sbi-logo">-->
+
       <h3 class="quote-main-heading">Health Alpha - Select Variant Quote</h3>
 
       <div class="premium-box">
@@ -541,14 +562,13 @@
       const endlessContainer = document.getElementById('endlessContainer');
       const endlessSelect = document.getElementById('endless');
 
-      // Hide if Sum Insured is 5 Lac (500000)
-      if (siVal === 500000) {
+      // Hide if Sum Insured is less than 10 Lac (covers 5 Lac and 7.5 Lac)
+      if (siVal < 1000000) {
           endlessContainer.style.display = 'none';
-          endlessSelect.value = "Not Opted"; // Reset value to ensure no calculation
+          endlessSelect.value = "Not Opted"; // Reset to prevent calculation
       } else {
           endlessContainer.style.display = 'block';
       }
-
       // --- MATERNITY WAITING PERIOD LOGIC ---
       const matWaitContainer = document.getElementById('maternityWaitContainer');
       const matWaitSelect = document.getElementById('maternityWait');
@@ -838,7 +858,7 @@ let msg = `*Health Alpha Quote* 🏥\n\n`;
       console.error("Error sharing:", error);
       alert("Sharing failed or cancelled.");
       document.getElementById('waBtn').innerHTML = 'WhatsApp'; // Restore
-    }a
+    }
   });
 
   // NEW: TRIGGER UPDATES ON SI CHANGE & LOAD
