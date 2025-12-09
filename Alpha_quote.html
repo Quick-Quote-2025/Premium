@@ -206,8 +206,10 @@
       <div class="grid">
         <div class="col-6"><label>Consumables</label><select id="consumables"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
         <div class="col-6"><label>Health Check-Up</label><select id="healthCheck"><option>Not Opted</option><option>Rs.3,000</option><option>Rs.4,000</option><option>Rs.5,000</option></select></div>
-        <div class="col-6"><label>Endless Sum Insured</label><select id="endless"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
-        <div class="col-6"><label>Reconstructive Surgery</label><select id="reconstructive"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
+        <div class="col-6" id="endlessContainer"><label>Endless Sum Insured</label>
+    <select id="endless"><option>Not Opted</option><option>Yes</option><option>No</option></select>
+</div>      
+  <div class="col-6"><label>Reconstructive Surgery</label><select id="reconstructive"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
         
         <div class="col-6" id="opdContainer"><label>OPD Coverage</label>
             <select id="opd">
@@ -535,6 +537,17 @@
           matSelect.appendChild(el);
       });
       if(matOptions.includes(currentMatVal)) matSelect.value = currentMatVal;
+// --- ENDLESS SUM INSURED LOGIC ---
+      const endlessContainer = document.getElementById('endlessContainer');
+      const endlessSelect = document.getElementById('endless');
+
+      // Hide if Sum Insured is 5 Lac (500000)
+      if (siVal === 500000) {
+          endlessContainer.style.display = 'none';
+          endlessSelect.value = "Not Opted"; // Reset value to ensure no calculation
+      } else {
+          endlessContainer.style.display = 'block';
+      }
 
       // --- MATERNITY WAITING PERIOD LOGIC ---
       const matWaitContainer = document.getElementById('maternityWaitContainer');
@@ -825,7 +838,7 @@ let msg = `*Health Alpha Quote* 🏥\n\n`;
       console.error("Error sharing:", error);
       alert("Sharing failed or cancelled.");
       document.getElementById('waBtn').innerHTML = 'WhatsApp'; // Restore
-    }
+    }a
   });
 
   // NEW: TRIGGER UPDATES ON SI CHANGE & LOAD
