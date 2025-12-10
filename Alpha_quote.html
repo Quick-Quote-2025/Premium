@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Health Alpha Select Premium Calculator</title>
+<title>SBI General Insurance Premium Calculator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-  :root{ --bg-offwhite:#f7f7f2; --card-bg:#ffffff; --text:#1f2937; --muted:#6b7280; --accent:#1f7a1f; --accent-hover:#196519; --blue:#1867c0; --blue-hover:#14549a; --grey:#7a7a7a; --grey-hover:#6a6a6a; --border:#e5e7eb; --pill:#eef2f7; --danger:#c62828; --ok:#2e7d32; --section:#0ea5e9; }
-   
+  :root{ --bg-offwhite:#f7f7f2; --card-bg:#ffffff; --text:#1f2937; --muted:#6b7280; --accent:#1f7a1f; --accent-hover:#196519; --blue:#1867c0; --blue-hover:#14549a; --grey:#7a7a7a; --grey-hover:#6a6a6a; --border:#e5e7eb; --pill:#eef2f7; --danger:#c62828; --ok:#2e7d32; --section:#0ea5e9; --purple:#7e22ce; }
+    
   /* Global Box Sizing Fix */
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -19,19 +19,20 @@
     color: var(--text); 
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; 
     line-height: 1.4; 
+    min-height: 100vh;
   }
 
   .container{ max-width:960px; margin:0 auto; padding:18px 14px 70px; }
-  
+    
   /* HEADER & LOGO STYLES */
   header.page-head{ text-align:center; margin:10px 0 18px; }
-  header.page-head h1{ margin:0; font-size:24px; font-weight:800; text-shadow: 0 1px 3px rgba(255,255,255,0.8);color:rgba(94, 10, 94); }
-  
-  /* Logo Class */
+  header.page-head h1{ margin:0; font-size:24px; font-weight:800; text-shadow: 0 1px 3px rgba(255,255,255,0.8);color:rgba(125, 28, 125); }
+    
+  /* Logo Class (Main Page) */
   .sbi-logo {
       display: block;
       margin: 0 auto 10px auto;
-      max-width: 200px; /* Adjust width as needed */
+      max-width: 200px; 
       height: auto;
   }
 
@@ -52,6 +53,62 @@
   input[type="number"],select,input[type="text"]{ width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:#fff; font-size:13px; transition:border-color .2s ease, box-shadow .2s ease; }
   input[type="number"]:focus,select:focus,input[type="text"]:focus{ outline:none; border-color:#93c5fd; }
 
+  /* ---------------------------------------------------- */
+  /* NEW ATTRACTIVE TOGGLE BAR STYLES                     */
+  /* ---------------------------------------------------- */
+  .toggle-wrapper {
+      position: relative;
+      display: flex;
+      background: #f1f5f9; /* Light grey background */
+      border-radius: 99px; /* Fully rounded pill */
+      padding: 4px;
+      height: 44px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); /* Inner shadow for depth */
+      border: 1px solid #e2e8f0;
+      overflow: hidden; /* Keep sliding element contained */
+      isolation: isolate; /* Create stacking context */
+  }
+
+  /* The floating white pill that slides */
+  .toggle-slider {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 0;
+      border-radius: 99px;
+      background: #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.05); /* Soft drop shadow */
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      z-index: 1;
+      pointer-events: none; /* Let clicks pass through to options */
+  }
+
+  /* The text options */
+  .toggle-option {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      z-index: 2; /* Sit on top of slider */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s ease;
+      user-select: none;
+      border-radius: 99px;
+  }
+
+  .toggle-option:hover {
+      color: #475569;
+  }
+
+  .toggle-option.active {
+      color: var(--blue); /* Brand color when active */
+      font-weight: 700;
+  }
+
   /* Member row */
   .member-card{ border:1px dashed var(--border); border-radius:12px; padding:10px; }
   .band-wrap{ display:flex; align-items:center; gap:8px; margin-bottom:6px; }
@@ -59,11 +116,12 @@
   .error-text{ font-size:12px; color:var(--danger); margin-top:4px; }
 
   /* Actions */
-  .actions{ display:flex; justify-content:center; gap:10px; padding-top:8px; flex-wrap:wrap; }
-  .btn{ border:none; border-radius:10px; padding:11px 16px; font-weight:700; font-size:13px; cursor:pointer; background:var(--grey); color:#fff; }
+  .actions{ display:flex; justify-content:center; gap:10px; padding-top:8px; flex-wrap:wrap; margin-top: 10px; }
+  .btn{ border:none; border-radius:10px; padding:11px 16px; font-weight:700; font-size:13px; cursor:pointer; background:var(--grey); color:#fff; transition: transform 0.1s ease, background 0.2s; }
+  .btn:active { transform: scale(0.98); }
   .btn-primary{ background:var(--accent); } 
   .btn-blue{ background:var(--blue); }
-   
+    
   /* WhatsApp Button Styling */
   .btn-whatsapp { 
     background: #25D366; 
@@ -75,286 +133,545 @@
   .btn-whatsapp:hover { background: #20bd5a; }
   .icon-wa { width: 16px; height: 16px; fill: currentColor; }
 
+  /* Back Button styling */
+  .back-nav {
+      margin-bottom: 15px;
+  }
+  .btn-back {
+      background: transparent;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+  }
+  .btn-back:hover { background: #eff6ff; }
+
   /* -------------------------------------------------------- */
-  /* ULTRA COMPACT RESULT STYLES (Single Page Fit)            */
+  /* HOME PAGE STYLES                                       */
   /* -------------------------------------------------------- */
-   
+  #home-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 20px;
+  }
+
+  .product-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+  }
+
+  .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+      border-color: var(--blue);
+  }
+
+  .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 5px;
+      background: var(--grey);
+  }
+
+  .product-card.alpha::before { background: var(--accent); }
+  .product-card.super::before { background: var(--purple); }
+
+  .card-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+      display: block;
+  }
+
+  .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+  }
+
+  .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+  }
+
+  /* -------------------------------------------------------- */
+  /* SUPER HEALTH COMING SOON STYLES                        */
+  /* -------------------------------------------------------- */
+  .coming-soon-box {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-top: 40px;
+  }
+  .cs-title { font-size: 20px; font-weight: 800; color: var(--purple); margin-bottom: 10px; }
+  .cs-text { font-size: 14px; color: var(--muted); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* -------------------------------------------------------- */
+  /* RESULT SECTION STYLES                                  */
+  /* -------------------------------------------------------- */
+    
   #result-section { 
     background: white; 
-    padding: 15px; 
+    padding: 10px; 
     border-radius: 14px; 
     border: 2px solid #374151;
-    width: 98%; 
+    width: 95%; 
+    max-width: 800px;
     margin: 20px auto;
+    overflow: visible; 
   }
 
-  /* Logo inside Result Section (for PDF) */
-  #result-section .sbi-logo {
-      max-width: 150px;
-      margin-bottom: 5px;
+  /* HEADER STYLING FOR QUOTE */
+  .res-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+      width: 100%;
   }
 
-  /* Compact Heading */
-  .quote-main-heading {
-    text-align: center;
-    color: var(--blue);
-    font-size: 15px; 
-    font-weight: 800;
-    margin: 0 0 8px 0; 
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #e5e7eb;
-    padding-bottom: 5px;
+  .res-left {
+      width: 35%;
+      text-align: left;
+      font-size: 12px;
+      color: rgba(125, 28, 125);
+      font-weight: 800;
+      line-height: 1.2;
   }
-   
+
+  .res-center {
+      width: 30%;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: underline;
+      color:rgba(125, 28, 125);
+  }
+
+  .res-right {
+      width: 35%;
+      display: flex;
+      justify-content: flex-end;
+  }
+
+  .res-logo {
+      max-width: 140px;
+      height: auto;
+  }
+
   /* Compact Premium Box */
   .premium-box {
-    background: #f0fdf4; 
-    border: 2px dashed #16a34a;
+    background: rgba(125, 28, 125); 
+    border: 2px dashed #000; 
     border-radius: 8px;
-    padding: 6px; 
+    padding: 5px; 
     text-align: center;
-    margin-bottom: 8px; 
+    margin-bottom: 5px; 
   }
-  .premium-title { font-size: 10px; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 1px; }
-  .premium-amount { font-size: 18px; font-weight: 900; color: #15803d; margin: 2px 0; } 
-  .discount-info { color: #15803d; font-size: 10px; font-weight: 600; }
+  .premium-title { font-size: 12px; font-weight: 700; color: #fdfffe; text-transform: uppercase; letter-spacing: 1px; }
+  .premium-amount { font-size: 18px; font-weight: 900; color: #fdfffe; margin: 1px 0; } 
+  .discount-info { color: #fdfffe; font-size: 9px; font-weight: 600; }
 
   /* Compact Table Styling */
   .result-table { 
     width: 100%; 
-    margin: 0 auto 5px auto; 
+    margin: 0 auto 3px auto; 
     table-layout: fixed; 
+    border-collapse: collapse;
   }
-   
+    
   .result-table th, .result-table td { 
-    padding: 1px 6px; 
+    padding: 1px 4px; 
     border: 1px solid #9ca3af; 
-    font-size: 10px; 
-    line-height: 1.3;
+    font-size: 9px; 
+    line-height: 1.2;
     vertical-align: middle;
   }
-   
+    
   .result-table th { 
     background-color: #f3f4f6; 
     color: #111827; 
     font-weight: 700; 
-    width: 40%; 
+    width: 45%; 
     text-align: left; 
-    height: 20px;
+    height: 18px;
   }
-   
+    
   .result-table td { 
     color: #1f2937; 
-    width: 60%; 
+    width: 55%; 
     text-align: left;
-    height: 20px;
+    height: 18px;
   }
-   
+    
   /* Section headers in result */
   #result-section .section-title {
-      font-size: 11px;
+      font-size: 10px;
       margin-bottom: 2px;
-      min-height: 18px;
+      min-height: 16px;
+      margin-top: 4px;
   }
-  #result-section .section-title .tag { padding: 2px 8px; }
+  #result-section .section-title .tag { padding: 1px 6px; }
 
   /* Disclaimer Styling */
   .disclaimer-note {
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 800; 
       font-style: italic;
       color: #555;
       text-align: center;
-      margin-top: 10px;
-      line-height: 1.2;
+      margin-top: 8px;
+      line-height: 1.1;
   }
-   
-  /* Print Media - Hide inputs */
-  @media print {
-    #basic-section, #members-section, #modifiers-section, #optional-section, #discounts-section, .actions, #pagedrop-fab-container, #pagedrop-expiry-popup, #membersError { display: none !important; }
+
+  /* MEDIA QUERIES FOR MOBILE ALIGNMENT */
+  @media (max-width: 600px) {
+      .res-left { font-size: 10px; width: 40%; }
+      .res-center { font-size: 13px; width: 20%; }
+      .res-right { width: 40%; }
+      .res-logo { max-width: 100px; } /* Shrink logo on mobile */
+      #result-section { padding: 8px; margin: 10px auto; width: 95%; }
+  }
     
+  /* Print Media - Ensure width is safe for PDF */
+  @media print {
+    #basic-section, #members-section, #modifiers-section, #optional-section, #discounts-section, .actions, #pagedrop-fab-container, #pagedrop-expiry-popup, #membersError, .back-nav, .primary-actions { display: none !important; }
+      
     #result-section { 
         display: block !important; 
         border: 2px solid #374151 !important; 
-        width: 98% !important; 
+        width: 95% !important; 
         margin: 0 auto !important;
-        padding: 10px !important;
+        padding: 5px !important;
+        box-sizing: border-box !important;
     }
-    .result-table th, .result-table td { border: 1px solid #000 !important; font-size: 10px !important; padding: 2px 5px !important; }
+    .result-table th, .result-table td { border: 1px solid #000 !important; font-size: 8px !important; padding: 1px 3px !important; }
+      
+    /* Hide result actions in print (download buttons themselves) */
+    .result-actions { display: none !important; }
   }
 </style>
 </head>
 <body>
 
   <div class="container">
-    <header class="page-head">
-        <img src="SBI_Logo.png" alt="SBI General Insurance" class="sbi-logo">
-        <h1>Health Alpha Select Premium Calculator</h1>
-    </header>
+    
+    <div id="home-section">
+        <header class="page-head">
+            <img src="SBI_Logo_New.png" alt="SBI General Insurance" class="sbi-logo">
+            <h1>Premium Calculator</h1>
+            <p style="font-size:14px; color:var(--muted); margin-top:5px;">Select a product to proceed</p>
+        </header>
 
-    <section class="card" id="basic-section">
-      <div class="section-title"><span class="tag">Basic Details</span><span class="divider"></span></div>
-      <div class="grid">
-        <div class="col-6"><label>Sum Insured</label><select id="sumInsured"><option>5 Lac</option><option>7.5 Lac</option><option selected>10 Lac</option><option>12.5 Lac</option><option>15 Lac</option><option>20 Lac</option><option>25 Lac</option><option>30 Lac</option><option>35 Lac</option><option>50 Lac</option><option>75 Lac</option><option>1Cr</option></select></div>
-        <div class="col-6"><label>Policy Type</label><select id="policyType"><option>Individual</option><option>Family Floater</option></select></div>
-        <div class="col-6"><label>Combination</label><div class="band-wrap" style="gap:6px;"><select id="combination" style="flex:1;"><option>1A</option><option>2A</option><option>1A+1C</option><option>1A+2C</option><option>1A+3C</option><option>1A+4C</option><option>1A+5C</option><option>2A+1C</option><option>2A+2C</option><option>2A+3C</option><option>2A+4C</option><option>2A+5C</option></select><button class="btn btn-grey" id="genMembersBtn">Generate</button></div></div>
-        <div class="col-6"><label>Zone</label><select id="zone"><option>Zone B</option><option>Zone A</option></select></div>
-        <div class="col-6"><label>Tenure</label><select id="tenure"><option>1 Year</option></select></div>
-      </div>
-    </section>
+        <div class="home-grid">
+            <div class="product-card alpha" onclick="showCalculator()">
+                <span class="card-icon">🏥</span>
+                <div class="card-title">Health Alpha Select</div>
+                <div class="card-desc">Calculate premiums for individual and family floater plans with customizable benefits.</div>
+            </div>
 
-    <section class="card" id="members-section">
-      <div class="section-title"><span class="tag">Member Details</span><span class="divider"></span></div>
-      <div id="membersWrap" class="grid"></div>
-      <div id="membersError" class="error-text" style="display:none;"></div>
-    </section>
+            <div class="product-card super" onclick="showSuperHealth()">
+                <span class="card-icon">🦸</span>
+                <div class="card-title">Super Health</div>
+                <div class="card-desc">Comprehensive coverage for enhanced protection and wellness needs.</div>
+            </div>
+        </div>
+    </div>
 
-    <section class="card" id="modifiers-section">
-      <div class="section-title"><span class="tag">Base Modifiers</span><span class="divider"></span></div>
-      <div class="grid">
-        <div class="col-6"><label>Room Category</label><select id="roomCategory"><option>Single Pvt AC Room</option><option>Twin-Sharing</option><option>Actuals</option></select></div>
-        <div class="col-6"><label>PED Waiting Period</label><select id="pedWait"><option>3 Year</option><option>2 Year</option><option>1 Year</option></select></div>
-        <div class="col-6"><label>Specific Waiting Period</label><select id="specWait"><option>2 Year</option><option>1 Year</option></select></div>
-        <div class="col-6"><label>No Claim Bonus / Discount</label><select id="ncb"><option>Upto 100%</option><option>Upto 200%</option><option>Upto 300%</option><option>Upto 400%</option><option>Upto 500%</option><option>Upto 600%</option><option>Upto 700%</option><option>Upto 800%</option><option>Upto 900%</option><option>Upto 1000%</option><option>No Claim Discount</option></select></div>
-      </div>
-    </section>
-
-    <section class="card" id="optional-section">
-      <div class="section-title"><span class="tag">Optional Benefits</span><span class="divider"></span></div>
-      <div class="grid">
-        <div class="col-6"><label>Consumables</label><select id="consumables"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
-        <div class="col-6"><label>Health Check-Up</label><select id="healthCheck"><option>Not Opted</option><option>Rs.3,000</option><option>Rs.4,000</option><option>Rs.5,000</option></select></div>
-        <div class="col-6" id="endlessContainer"><label>Endless Sum Insured</label>
-    <select id="endless"><option>Not Opted</option><option>Yes</option><option>No</option></select>
-</div>  
-  <div class="col-6"><label>Reconstructive Surgery</label><select id="reconstructive"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
+    <div id="calculator-section" style="display:none;">
         
-        <div class="col-6" id="opdContainer"><label>OPD Coverage</label>
-            <select id="opd">
-                <option>Not Opted</option>
-            </select>
+        <div class="back-nav">
+            <button class="btn-back" onclick="goHome()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Home
+            </button>
         </div>
 
-        <div class="col-6" id="hospitalCashContainer"><label>Hospital Daily Cash</label>
-            <select id="hospitalCash">
-                <option>Not Opted</option>
-                <option>3 Days</option>
-                <option>5 Days</option>
-                <option>10 Days</option>
-            </select>
+        <header class="page-head">
+            <img src="SBI_Logo_New.png" alt="SBI General Insurance" class="sbi-logo">
+            <h1>Health Alpha Select Premium Calculator</h1>
+        </header>
+
+        <section class="card" id="basic-section">
+          <div class="section-title"><span class="tag">Basic Details</span><span class="divider"></span></div>
+          <div class="grid">
+            <div class="col-12"><label>Customer Name</label><input type="text" id="customerName" placeholder="Enter Customer Name"></div>
+
+            <div class="col-6"><label>Sum Insured</label><select id="sumInsured"><option>5 Lac</option><option>7.5 Lac</option><option selected>10 Lac</option><option>12.5 Lac</option><option>15 Lac</option><option>20 Lac</option><option>25 Lac</option><option>30 Lac</option><option>35 Lac</option><option>50 Lac</option><option>75 Lac</option><option>1Cr</option></select></div>
+            
+            <div class="col-6">
+                <label>Policy Type</label>
+                <input type="hidden" id="policyType" value="Individual">
+                <div class="toggle-wrapper">
+                    <div class="toggle-slider"></div>
+                    <div class="toggle-option active" data-val="Individual">Individual</div>
+                    <div class="toggle-option" data-val="Family Floater">Floater</div>
+                </div>
+            </div>
+
+            <div class="col-6"><label>Combination</label><div class="band-wrap" style="gap:6px;"><select id="combination" style="flex:1;"><option>1A</option><option>2A</option><option>1A+1C</option><option>1A+2C</option><option>1A+3C</option><option>1A+4C</option><option>1A+5C</option><option>2A+1C</option><option>2A+2C</option><option>2A+3C</option><option>2A+4C</option><option>2A+5C</option></select><button class="btn btn-grey" id="genMembersBtn">Generate</button></div></div>
+            
+            <div class="col-6">
+                <label>Zone</label>
+                <input type="hidden" id="zone" value="Zone B">
+                <div class="toggle-wrapper">
+                    <div class="toggle-slider"></div>
+                    <div class="toggle-option" data-val="Zone A">Zone A</div>
+                    <div class="toggle-option active" data-val="Zone B">Zone B</div>
+                </div>
+            </div>
+
+            <div class="col-6"><label>Tenure</label><select id="tenure"><option>1 Year</option></select></div>
+          </div>
+        </section>
+
+        <section class="card" id="members-section">
+          <div class="section-title"><span class="tag">Member Details</span><span class="divider"></span></div>
+          <div id="membersWrap" class="grid"></div>
+          <div id="membersError" class="error-text" style="display:none;"></div>
+        </section>
+
+        <section class="card" id="modifiers-section">
+          <div class="section-title"><span class="tag">Base Modifiers</span><span class="divider"></span></div>
+          <div class="grid">
+            <div class="col-6"><label>Room Category</label><select id="roomCategory"><option>Single Pvt AC Room</option><option>Twin-Sharing</option><option>Actuals</option></select></div>
+            <div class="col-6"><label>PED Waiting Period</label><select id="pedWait"><option>3 Year</option><option>2 Year</option><option>1 Year</option></select></div>
+            <div class="col-6"><label>Specific Waiting Period</label><select id="specWait"><option>2 Year</option><option>1 Year</option></select></div>
+            <div class="col-6"><label>No Claim Bonus / Discount</label><select id="ncb"><option>Upto 100%</option><option>Upto 200%</option><option>Upto 300%</option><option>Upto 400%</option><option>Upto 500%</option><option>Upto 600%</option><option>Upto 700%</option><option>Upto 800%</option><option>Upto 900%</option><option>Upto 1000%</option><option>No Claim Discount</option></select></div>
+          </div>
+        </section>
+
+        <section class="card" id="optional-section">
+          <div class="section-title"><span class="tag">Optional Benefits</span><span class="divider"></span></div>
+          <div class="grid">
+            <div class="col-6"><label>Consumables</label><select id="consumables"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
+            <div class="col-6"><label>Health Check-Up</label><select id="healthCheck"><option>Not Opted</option><option>Rs.3,000</option><option>Rs.4,000</option><option>Rs.5,000</option></select></div>
+            <div class="col-6" id="endlessContainer"><label>Endless Sum Insured</label>
+            <select id="endless"><option>Not Opted</option><option>Yes</option><option>No</option></select>
+        </div>  
+        <div class="col-6"><label>Reconstructive Surgery</label><select id="reconstructive"><option>Not Opted</option><option>Yes</option><option>No</option></select></div>
+            
+            <div class="col-6" id="opdContainer"><label>OPD Coverage</label>
+                <select id="opd">
+                    <option>Not Opted</option>
+                </select>
+            </div>
+
+            <div class="col-6" id="hospitalCashContainer"><label>Hospital Daily Cash</label>
+                <select id="hospitalCash">
+                    <option>Not Opted</option>
+                    <option>3 Days</option>
+                    <option>5 Days</option>
+                    <option>10 Days</option>
+                </select>
+            </div>
+
+            <div class="col-6" id="maternityContainer"><label>Maternity Benefit</label>
+                <select id="maternity">
+                    <option>Not Opted</option>
+                </select>
+            </div>
+
+            <div class="col-6" id="maternityWaitContainer" style="display:none;"><label>Maternity Waiting Period</label>
+                <select id="maternityWait">
+                    <option>Choose</option>
+                    <option>1 Year</option>
+                    <option>2 Years</option>
+                    <option>3 Years</option>
+                </select>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="card" id="discounts-section">
+          <div class="section-title"><span class="tag">Discounts</span><span class="divider"></span></div>
+          <div class="grid">
+            <div class="col-6"><label>Welcome Discount</label><select id="welcomeDisc"><option>No</option><option>Yes</option></select></div>
+            <div class="col-6"><label>Preferred Network</label><select id="preferredNetwork"><option>No</option><option>Yes</option></select></div>
+            <div class="col-6"><label>Girl Child Discount (Auto)</label>
+              <div id="girlChildStatus" class="muted" style="font-size:12px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:#fff;">Not Applicable</div>
+            </div>
+          </div>
+        </section>
+
+        <div class="actions primary-actions">
+          <button id="calcBtn" class="btn btn-primary">Calculate Premium</button>
+          <button id="resetBtn" class="btn btn-grey">Reset</button>
         </div>
 
-        <div class="col-6" id="maternityContainer"><label>Maternity Benefit</label>
-            <select id="maternity">
-                <option>Not Opted</option>
-            </select>
+        <div id="result-section" style="display:none; margin-top:20px;">
+            
+          <div class="res-header-row">
+            <div class="res-left">
+                <div>PRODUCT : HEALTH ALPHA</div>
+                <div>VARIANT : SELECT</div>
+            </div>
+            <div class="res-center">
+                QUOTE
+            </div>
+            <div class="res-right">
+                <img src="SBI_Logo_New.png" alt="SBI General Insurance" class="res-logo">
+            </div>
+          </div>
+          <div class="premium-box">
+            <div class="premium-title">Final Premium (0% GST)</div>
+            <div id="finalPremium" class="premium-amount">—</div>
+            <div class="discount-info">Total Discount Applied: <span id="discountAmt">—</span></div>
+          </div>
+
+          <div class="section-title"><span class="tag">Quote Details</span><span class="divider"></span></div>
+          <table class="result-table">
+            <tbody>
+              <tr><th>Customer Name</th><td id="infoName"></td></tr>
+              <tr><th>Sum Insured</th><td id="infoSI"></td></tr>
+              <tr><th>Policy Type</th><td id="infoPT"></td></tr>
+              <tr><th>Combination</th><td id="infoCombo"></td></tr>
+              <tr><th>Zone / Tenure</th><td><span id="infoZone"></span> / <span id="infoTenure"></span></td></tr>
+              <tr><th>Insured Members</th><td id="infoMembersDetailed"></td></tr>
+            </tbody>
+          </table>
+
+          <div class="section-title"><span class="tag">Inbuilt Benefits</span><span class="divider"></span></div>
+          <table class="result-table">
+            <thead><tr><th>Benefit</th><th>Coverage</th></tr></thead>
+            <tbody>
+              <tr><td>In-Patient Treatment</td><td>Upto Sum Insured</td></tr>
+          <tr><td>Day Care Treatment</td><td>Within Sum Insured</td></tr>
+              <tr><td>AYUSH Treatment</td><td>Within Sum Insured</td></tr>
+              <tr><td>Domiciliary Treatment</td><td>Within Sum Insured</td></tr>
+          <tr><td>Pre-hospitalisation</td><td>60 days</td></tr>
+          <tr><td>Post-hospitalisation</td><td>90 days</td></tr>
+          <tr><td>Road Ambulance</td><td>Rs.3,500</td></tr>
+          <tr><td>Radio Cab</td><td>Rs.1,000</td></tr>
+          <tr><td>Bariatric Surgery</td><td>Within Sum Insured</td></tr>
+          <tr><td>Organ Donor</td><td>Upto Sum Insured</td></tr>
+          <tr><td>Modern Treatment</td><td>Upto Sum Insured</td></tr>
+          <tr><td>Convalescence</td><td>Rs.5,000</td></tr>
+          <tr><td>Restore Benefit</td><td>Unlimited</td></tr>
+          <tr><td>E-opinion</td><td>Yes</td></tr>
+
+            </tbody>
+          </table>
+
+          <div class="section-title"><span class="tag">Base Modifiers Selected</span><span class="divider"></span></div>
+          <table class="result-table">
+            <tbody>
+              <tr><th>Room Category</th><td id="resRoom"></td></tr>
+              <tr><th>PED Waiting Period</th><td id="resPed"></td></tr>
+              <tr><th>Specific Waiting Period</th><td id="resSpec"></td></tr>
+              <tr><th>No Claim Bonus</th><td id="resNcb"></td></tr>
+            </tbody>
+          </table>
+
+          <div class="section-title"><span class="tag">Optional Features</span><span class="divider"></span></div>
+          <table class="result-table">
+            <thead><tr><th>Feature</th><th>Selected Option</th></tr></thead>
+            <tbody id="optionalChosenBody"></tbody>
+          </table>
+
+          <div class="disclaimer-note">
+            *This is for illustration purpose only. Final premium may vary based on any change of age or benefits opted at the time of policy issuance.
+          </div>
+            
+          <div class="actions result-actions" data-html2canvas-ignore="true" style="margin-top:20px; border-top:1px solid #e5e7eb; padding-top:15px; display:none;">
+            <button id="pdfBtn" class="btn btn-blue">Download Quote</button>
+            <button id="waBtn" class="btn btn-whatsapp">
+                <svg class="icon-wa" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                WhatsApp
+            </button>
+            <button onclick="window.location.reload();" class="btn btn-grey">Reset</button>
+          </div>
+
         </div>
+    </div>
 
-        <div class="col-6" id="maternityWaitContainer" style="display:none;"><label>Maternity Waiting Period</label>
-            <select id="maternityWait">
-                <option>Choose</option>
-                <option>1 Year</option>
-                <option>2 Years</option>
-                <option>3 Years</option>
-            </select>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="card" id="discounts-section">
-      <div class="section-title"><span class="tag">Discounts</span><span class="divider"></span></div>
-      <div class="grid">
-        <div class="col-6"><label>Welcome Discount</label><select id="welcomeDisc"><option>No</option><option>Yes</option></select></div>
-        <div class="col-6"><label>Preferred Network</label><select id="preferredNetwork"><option>No</option><option>Yes</option></select></div>
-        <div class="col-6"><label>Girl Child Discount (Auto)</label>
-          <div id="girlChildStatus" class="muted" style="font-size:12px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:#fff;">Not Applicable</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="actions">
-  <button id="calcBtn" class="btn btn-primary">Calculate Premium</button>
-  <button id="pdfBtn" class="btn btn-blue">Download Quote</button>
-  <button id="waBtn" class="btn btn-whatsapp">
-    <svg class="icon-wa" viewBox="0 0 24 24">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
-    WhatsApp
-  </button>
-  <button id="resetBtn" class="btn btn-grey">Reset</button>
-</div>
-
-    <div id="result-section" style="display:none; margin-top:20px;">
+    <div id="super-health-section" style="display:none;">
         
-      <!--<img src="SBI_Logo.png" alt="SBI General Insurance" class="sbi-logo">-->
+        <div class="back-nav">
+            <button class="btn-back" onclick="goHome()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Home
+            </button>
+        </div>
 
-      <h3 class="quote-main-heading">Health Alpha - Select Variant Quote</h3>
+        <header class="page-head">
+            <img src="SBI_Logo_New.png" alt="SBI General Insurance" class="sbi-logo">
+            <h1>Super Health</h1>
+        </header>
 
-      <div class="premium-box">
-        <div class="premium-title">Final Premium (0% GST)</div>
-        <div id="finalPremium" class="premium-amount">—</div>
-        <div class="discount-info">Total Discount Applied: <span id="discountAmt">—</span></div>
-      </div>
-
-      <div class="section-title"><span class="tag">Quote Details</span><span class="divider"></span></div>
-      <table class="result-table">
-        <tbody>
-          <tr><th>Sum Insured</th><td id="infoSI"></td></tr>
-          <tr><th>Policy Type</th><td id="infoPT"></td></tr>
-          <tr><th>Combination</th><td id="infoCombo"></td></tr>
-          <tr><th>Zone / Tenure</th><td><span id="infoZone"></span> / <span id="infoTenure"></span></td></tr>
-          <tr><th>Insured Members</th><td id="infoMembersDetailed"></td></tr>
-        </tbody>
-      </table>
-
-      <div class="section-title"><span class="tag">Inbuilt Benefits</span><span class="divider"></span></div>
-      <table class="result-table">
-        <thead><tr><th>Benefit</th><th>Coverage</th></tr></thead>
-        <tbody>
-          <tr><td>In-Patient Treatment</td><td>Upto Sum Insured</td></tr>
-      <tr><td>Day Care Treatment</td><td>Within Sum Insured</td></tr>
-          <tr><td>AYUSH Treatment</td><td>Within Sum Insured</td></tr>
-          <tr><td>Domiciliary Treatment</td><td>Within Sum Insured</td></tr>
-      <tr><td>Pre-hospitalisation</td><td>60 days</td></tr>
-      <tr><td>Post-hospitalisation</td><td>90 days</td></tr>
-      <tr><td>Road Ambulance</td><td>Rs.3,500</td></tr>
-      <tr><td>Radio Cab</td><td>Rs.1,000</td></tr>
-      <tr><td>Bariatric Surgery</td><td>Within Sum Insured</td></tr>
-      <tr><td>Organ Donor</td><td>Upto Sum Insured</td></tr>
-      <tr><td>Modern Treatment</td><td>Upto Sum Insured</td></tr>
-      <tr><td>Convalescence</td><td>Rs.5,000</td></tr>
-      <tr><td>Restore Benefit</td><td>Unlimited</td></tr>
-      <tr><td>E-opinion</td><td>Yes</td></tr>
-
-        </tbody>
-      </table>
-
-      <div class="section-title"><span class="tag">Base Modifiers Selected</span><span class="divider"></span></div>
-      <table class="result-table">
-        <tbody>
-          <tr><th>Room Category</th><td id="resRoom"></td></tr>
-          <tr><th>PED Waiting Period</th><td id="resPed"></td></tr>
-          <tr><th>Specific Waiting Period</th><td id="resSpec"></td></tr>
-          <tr><th>No Claim Bonus</th><td id="resNcb"></td></tr>
-        </tbody>
-      </table>
-
-      <div class="section-title"><span class="tag">Optional Features</span><span class="divider"></span></div>
-      <table class="result-table">
-        <thead><tr><th>Feature</th><th>Selected Option</th></tr></thead>
-        <tbody id="optionalChosenBody"></tbody>
-      </table>
-
-      <div class="disclaimer-note">
-        *This is for illustration purpose only. Final premium may vary based on any change of age or benefits opted at the time of policy issuance.
-      </div>
+        <div class="coming-soon-box">
+            <div style="font-size:48px; margin-bottom:15px;">🚧</div>
+            <div class="cs-title">Under Processing...</div>
+            <div class="cs-text">We are working hard to bring this calculator to you. Will be available soon!!</div>
+        </div>
 
     </div>
+
   </div>
 
 <script>
+  // ===========================================
+  // NAVIGATION LOGIC
+  // ===========================================
+  function showCalculator() {
+      document.getElementById('home-section').style.display = 'none';
+      document.getElementById('calculator-section').style.display = 'block';
+      document.getElementById('super-health-section').style.display = 'none';
+      window.scrollTo(0, 0);
+  }
+
+  function showSuperHealth() {
+      document.getElementById('home-section').style.display = 'none';
+      document.getElementById('calculator-section').style.display = 'none';
+      document.getElementById('super-health-section').style.display = 'block';
+      window.scrollTo(0, 0);
+  }
+
+  function goHome() {
+      document.getElementById('home-section').style.display = 'flex';
+      document.getElementById('calculator-section').style.display = 'none';
+      document.getElementById('super-health-section').style.display = 'none';
+      window.scrollTo(0, 0);
+  }
+
+  // ===========================================
+  // EXISTING CALCULATOR LOGIC (UNTOUCHED)
+  // ===========================================
+
   // Configuration
   const CFG = {
     ROOM_RENT_PCT: { "Single Pvt AC Room": -7.5, "Twin-Sharing": -10.0, "Actuals": 0.0 }, PRE_HOSP_PCT: 0.0, POST_HOSP_PCT: 3.0,
@@ -390,7 +707,7 @@
 
   const PER_MEMBER_AMBULANCE = {"0-17":21,"18-25":14,"26-30":18,"31-35":22,"36-40":27,"41-45":34,"46-50":43,"51-55":53,"56-60":66,"61-65":83,"66-70":103,"71-75":129,"76-80":161,"81-85":200,"85+":250};
   const PER_MEMBER_RADIO = {"0-17":24,"18-25":16,"26-30":20,"31-35":25,"36-40":31,"41-45":39,"46-50":49,"51-55":61,"56-60":76,"61-65":95,"66-70":118,"71-75":147,"76-80":183,"81-85":229,"85+":285};
-  
+    
   // Hospital Cash Data
   const HOSPITAL_CASH_PREMIUMS = {
     "0-17": 301, "18-25": 204, "26-30": 257, "31-35": 324, "36-40": 413,
@@ -588,6 +905,9 @@
   function calcPremium(){ 
     const siLabel=document.getElementById('sumInsured').value; const siVal=SI_LABEL_TO_VALUE[siLabel]; const pt=document.getElementById('policyType').value; const combo=document.getElementById('combination').value; const zone=document.getElementById('zone').value; const tenure=document.getElementById('tenure').value; const room=document.getElementById('roomCategory').value; const pedSel=document.getElementById('pedWait').value; const specSel=document.getElementById('specWait').value; const ncbSel=document.getElementById('ncb').value; const consumables=document.getElementById('consumables').value; const healthCheck=document.getElementById('healthCheck').value; const endless=document.getElementById('endless').value; const reconstructive=document.getElementById('reconstructive').value; const welcomeDisc=document.getElementById('welcomeDisc').value==='Yes'; const preferredNetwork=document.getElementById('preferredNetwork').value==='Yes';
     
+    // NEW: Get Customer Name
+    const custName = document.getElementById('customerName').value;
+
     const opd = document.getElementById('opd').value;
     const hospitalCash = document.getElementById('hospitalCash').value;
     const maternity = document.getElementById('maternity').value;
@@ -695,10 +1015,18 @@
 
     const resultSec = document.getElementById('result-section');
     resultSec.style.display='block';
+    
+    // Reveal actions inside result section
+    document.querySelector('.result-actions').style.display = 'flex';
+    document.querySelector('.result-actions').style.justifyContent = 'center';
+
     resultSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     document.getElementById('finalPremium').textContent=formatMoney(finalPremiumNoGST);
     document.getElementById('discountAmt').textContent=formatMoney(step3DiscountAmount+(pt==='Family Floater'? floaterAmt:0));
+    
+    // NEW: Display Customer Name in Result
+    document.getElementById('infoName').textContent = custName || "—";
     
     document.getElementById('infoSI').textContent=siLabel;
     document.getElementById('infoPT').textContent=pt;
@@ -752,8 +1080,74 @@
   // Initializers
   document.getElementById('genMembersBtn').addEventListener('click', renderMemberRows);
   document.getElementById('calcBtn').addEventListener('click', calcPremium);
-  document.getElementById('resetBtn').addEventListener('click', ()=>{ window.location.reload(); });
-  ['policyType','combination','zone','tenure'].forEach(id=>{ document.getElementById(id).addEventListener('change', ()=>{ if(id==='policyType'){ enforcePolicyCombination(); } renderMemberRows(); }); }); enforcePolicyCombination(); renderMemberRows();
+  // Modified Reset button to just clear calculator inputs, not reload page (to stay in SPA mode)
+  document.getElementById('resetBtn').addEventListener('click', ()=>{ 
+      // Simple reload for now to clear all state properly
+      window.location.reload(); 
+  });
+  
+  // -- NEW TOGGLE LOGIC INIT --
+  function initToggles() {
+    document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
+        // Find the hidden input associated (previous sibling in our markup)
+        const hiddenInput = wrapper.previousElementSibling;
+        const options = wrapper.querySelectorAll('.toggle-option');
+        const slider = wrapper.querySelector('.toggle-slider');
+        
+        // Helper to move slider
+        const moveSlider = (targetOption) => {
+            // Because flex items might not have calculated width instantly on render, 
+            // we rely on offsetLeft and offsetWidth
+            const left = targetOption.offsetLeft;
+            const width = targetOption.offsetWidth;
+            slider.style.transform = `translateX(${left}px)`;
+            slider.style.width = `${width}px`;
+        };
+        
+        // Initial set (wait a tick for rendering)
+        const activeOpt = wrapper.querySelector('.toggle-option.active');
+        if(activeOpt) {
+            setTimeout(() => moveSlider(activeOpt), 50);
+        }
+        
+        options.forEach(opt => {
+            opt.addEventListener('click', () => {
+                // 1. Visual update
+                options.forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                
+                // 2. Animate Slider
+                moveSlider(opt);
+                
+                // 3. Value update
+                const newVal = opt.getAttribute('data-val');
+                hiddenInput.value = newVal;
+                
+                // 4. Dispatch change event so other listeners (enforcePolicyCombination, calcPremium) react
+                hiddenInput.dispatchEvent(new Event('change'));
+            });
+        });
+        
+        // Handle window resize to keep slider consistent
+        window.addEventListener('resize', () => {
+            const currentActive = wrapper.querySelector('.toggle-option.active');
+            if(currentActive) moveSlider(currentActive);
+        });
+    });
+  }
+  initToggles();
+
+  // Re-attach listeners to the hidden inputs since we replaced selects
+  ['policyType','combination','zone','tenure'].forEach(id=>{ 
+      document.getElementById(id).addEventListener('change', ()=>{ 
+          if(id==='policyType'){ enforcePolicyCombination(); } 
+          // If policy type changes, we might need to re-render rows or logic
+          if(id==='policyType' || id==='combination') renderMemberRows(); 
+      }); 
+  }); 
+  
+  enforcePolicyCombination(); 
+  renderMemberRows();
 
   // Listen for Maternity changes to toggle waiting period
   document.getElementById('maternity').addEventListener('change', updateOptionalVisibility);
@@ -762,8 +1156,10 @@
   document.getElementById('pdfBtn').addEventListener('click', ()=>{
       const element = document.getElementById('result-section');
       if(element.style.display === 'none') { alert("Please Calculate Premium first."); return; }
+      
+      // OPTIMIZED FOR SINGLE PAGE
       const opt = {
-          margin: [5, 5, 5, 5], 
+          margin: [3, 3, 3, 3], // Tighter margins
           filename: 'Health_Alpha_Quote.pdf',
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
@@ -785,31 +1181,35 @@
     }
 
     // 2. Prepare Data for Message
+    const custName = document.getElementById('infoName').textContent;
     const premium = document.getElementById('finalPremium').textContent;
     const si = document.getElementById('infoSI').textContent;
     const policyType = document.getElementById('infoPT').textContent;
     const zone = document.getElementById('infoZone').textContent;
     const tenure = document.getElementById('infoTenure').textContent;
     const members = document.getElementById('infoMembersDetailed').textContent;
-const combination = document.getElementById('infoCombo').textContent;
-const memberData = getMembers();
-const memberAges = memberData.map(m => m.age).join(', ');
+    const combination = document.getElementById('infoCombo').textContent;
+    const memberData = getMembers();
+    const memberAges = memberData.map(m => m.age).join(', ');
 
-let msg = `*Health Alpha Quote* 🏥\n\n`;
+    let msg = `*Health Alpha Quote* 🏥\n\n`;
+    if(custName && custName !== "—") {
+      msg += `*Customer Name:* ${custName} \n`;
+    }
     msg += `*Final Premium:* ${premium} \n`;
     msg += `-----------------------------\n`;
     msg += `*Sum Insured:* ${si}\n`;
     msg += `*Policy Type:* ${policyType}\n`;
     msg += `*Zone / Tenure:* ${zone} / ${tenure}\n`;
     msg += `*Combination:* ${combination}\n`;  // 
-         msg += `*Member Ages:* ${memberAges}\n`;   // 
+    msg += `*Member Ages:* ${memberAges}\n`;   // 
     msg += `-----------------------------\n`;
     msg += `_Please find the attached quote for more details_`;
 
     
     // 3. Configure PDF Options
     const opt = {
-      margin: [5, 5, 5, 5],
+      margin: [3, 3, 3, 3], // Tighter margins
       filename: 'Health_Alpha_Quote.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
